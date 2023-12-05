@@ -1,23 +1,26 @@
-const extendHex = (shortHex) => {
-  // Remove the # (if present) and convert to lowercase
-  shortHex = shortHex.replace("#", "").toLowerCase();
+function divide(arr, n) {
+  const result = [];
+  let currentSubarray = [];
 
-  // Check if the input is a valid short hex code
-  if (/^[0-9a-f]{3}$/.test(shortHex)) {
-    // Convert each short component to a full component
-    const fullHex = shortHex
-      .split("")
-      .map((char) => char.repeat(2))
-      .join("");
-
-    // Add the # prefix to the full hex code
-    return "#" + fullHex;
-  } else {
-    // Handle invalid input
-    alert("Invalid short hex code.");
+  for (const num of arr) {
+    // Check if adding the current number exceeds the maximum sum
+    if (currentSubarray.reduce((sum, x) => sum + x, 0) + num > n) {
+      result.push(currentSubarray);
+      currentSubarray = [num];
+    } else {
+      currentSubarray.push(num);
+    }
   }
-};
 
-// Do not change the code below.
-const shortHex = prompt("Enter Short Hex.");
-alert(extendHex(shortHex));
+  // Add the last subarray to the result
+  result.push(currentSubarray);
+
+  return result;
+}
+
+// Examples
+console.log(divide([1, 2, 3, 4, 1, 0, 2, 2], 5));
+// Output: [[1, 2], [3], [4, 1, 0], [2, 2]]
+
+console.log(divide([4, 3, 2, 1], 4));
+// Output: [[4], [3], [2], [1]]
